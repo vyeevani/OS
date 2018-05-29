@@ -28,9 +28,12 @@ reality.iso: reality_kernel.bin
 	echo '	boot' >> iso/boot/grub/grub.cfg
 	echo '}' >> iso/boot/grub/grub.cfg
 	grub-mkrescue --output=$@ iso
+	rm -rf iso
 
 clean: reality.iso
-	rm -rf iso
 	rm *.o
 	rm *.bin
 	rm *.iso
+
+run: reality.iso
+	VirtualBox --startvm "Reality OS" &
