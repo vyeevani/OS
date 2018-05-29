@@ -37,7 +37,7 @@ clean:
 
 transfer:
 	git add .
-	git commit
+	git commit -m "Automated build"
 	git push origin master
 
 run: reality.iso
@@ -46,3 +46,8 @@ run: reality.iso
 
 close: reality.iso
 	(killall VirtualBox) || true
+
+build:
+	make clean
+	make reality.iso
+	make transfer
