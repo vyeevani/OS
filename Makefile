@@ -51,6 +51,6 @@ close: reality.iso
 	(killall VirtualBox) || true
 
 build:
-	make clean || true
+	make delete || true
 	make reality.iso
 	make transfer
