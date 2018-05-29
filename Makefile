@@ -30,7 +30,7 @@ reality.iso: reality_kernel.bin
 	grub-mkrescue --output=$@ iso
 	rm -rf iso
 
-clean: reality.iso
+clean:
 	rm *.o
 	rm *.bin
 	rm *.iso
