@@ -35,6 +35,11 @@ clean:
 	rm *.bin
 	rm *.iso
 
+transfer:
+	git add .
+	git commit
+	git push origin master
+
 run: reality.iso
 	(killall VirtualBox && sleep 1) || true
 	VirtualBox --startvm "Reality OS" &
