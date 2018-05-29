@@ -9,8 +9,21 @@ objects = loader.o kernel.o
 %.o: %.s
 	as $(ASPARAMS) -o $@ $<
 
-myKernel.bin: linker.ld $(objects)
+reality_kernel.bin: linker.ld $(objects)
 	ld $(LDPARAMS) -T $< -o $@ $(objects)
 
-install: myKernel.bin
-	sudo cp $< /boot/myKernel.bin
+install: reality_kernel.bin
+	sudo cp $< /boot/reality_kernel.bin
+
+reality.iso: reality_kernel.bin
+	mkdir iso
+	mkdir iso/boot
+	mkdir iso/boot/grub
+	cp $< iso/boot
+	echo 'set timeout=0' >> iso/boot/grub/grub.cfg
+	echo 'set default=0' >> iso/boot/grub/grub.cfg
+	echo '' >> iso/boot/grub/grub.cfg
+	echo 'menuentry 'RealityOS'' >> iso/boot/grub/grub.cfg
+	echo '	multiboot boot/reality_kernel.bin' >> iso/boot/grub/grub.cfg
+	echo '	boot' >> iso/boot/grub/grub.cfg
+	echo '}' >> iso/boot/grub/grub.cfg
