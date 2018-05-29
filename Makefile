@@ -28,6 +28,3 @@ reality.iso: reality_kernel.bin
 	echo '	boot' >> iso/boot/grub/grub.cfg
 	echo '}' >> iso/boot/grub/grub.cfg
 	grub-mkrescue --output=$@ iso
-	rm -rf iso
-
-
