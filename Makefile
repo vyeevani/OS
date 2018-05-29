@@ -38,3 +38,6 @@ clean: reality.iso
 run: reality.iso
 	(killall VirtualBox && sleep 1) || true
 	VirtualBox --startvm "Reality OS" &
+
+close: reality.iso
+	(killall VirtualBox) || true
