@@ -11,3 +11,6 @@ objects = loader.o kernel.o
 
 myKernel.bin: linker.ld $(objects)
 	ld $(LDPARAMS) -T $< -o $@ $(objects)
+
+install: myKernel.bin
+	sudo cp $< /boot/myKernel.bin
