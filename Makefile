@@ -33,6 +33,9 @@ reality.iso: reality_kernel.bin
 clean:
 	rm *.o
 	rm *.bin
+
+delete:
+	make clean || true
 	rm *.iso
 
 transfer:
