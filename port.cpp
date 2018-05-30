@@ -26,7 +26,7 @@ Port16Bit::Port16Bit(uint16_t portNumber)
 
 }
 
-Port8Bit::~Port8Bit() {
+Port16Bit::~Port16Bit() {
 
 }
 
@@ -39,12 +39,12 @@ Port32Bit::~Port32Bit() {
 
 }
 
-Port8Bit::Port8Bit(uint16_t portNumber)
+Port8BitSlow::Port8BitSlow(uint16_t portNumber)
         : Port8Bit(portNumber){
 
 }
 
-Port8Bit::~Port8Bit() {
+Port8BitSlow::~Port8BitSlow() {
 
 }
 
