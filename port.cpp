@@ -49,7 +49,7 @@ Port32Bit::~Port32Bit() {
 }
 
 void Port8Bit::Write(uint8_t data) {
-    __asm__ volatile("outb %0 %1": : "a" (data), "Nd" (portNumber));
+    __asm__ volatile("outb %0, %1" : : "a" (_data), "Nd" (_port));
 }
 
 uint8_t Port8Bit::Read() {
@@ -59,11 +59,11 @@ uint8_t Port8Bit::Read() {
 }
 
 void Port8BitSlow::Write(uint8_t data) {
-    __asm__ volatile("outb %0 %1\n jmp lf\n1: jmp 1f\n1:": : "a" (data), "Nd" (portNumber));
+    __asm__ volatile("outb %0, %1\n jmp lf\n1: jmp 1f\n1:": : "a" (data), "Nd" (portNumber));
 }
 
 void Port16Bit::Write(uint16_t data) {
-    __asm__ volatile("outw %0 %1": : "a" (data), "Nd" (portNumber));
+    __asm__ volatile("outw %0, %1": : "a" (data), "Nd" (portNumber));
 }
 
 uint16_t Port16Bit::Read() {
@@ -73,7 +73,7 @@ uint16_t Port16Bit::Read() {
 }
 
 void Port32Bit::Write(uint32_t data) {
-    __asm__ volatile("outl %0 %1": : "a" (data), "Nd" (portNumber));
+    __asm__ volatile("outl %0, %1": : "a" (data), "Nd" (portNumber));
 }
 
 uint32_t Port32Bit::Read() {
