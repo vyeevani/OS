@@ -1,5 +1,5 @@
-#ifndef _GDT_H
-#define _GDT_H
+#ifndef __GDT_H
+#define __GDT_H
 
 #include "types.h"
 
@@ -28,6 +28,5 @@ class GlobalDescriptorTable {
         ~GlobalDescriptorTable();
         uint16_t CodeSegmentSelector();
         uint16_t DataSegmentSelector();
-}
-
+};
 #endif
