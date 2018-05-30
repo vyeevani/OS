@@ -59,7 +59,7 @@ uint8_t Port8Bit::Read() {
 }
 
 void Port8BitSlow::Write(uint8_t data) {
-    __asm__ volatile("outb %0, %1\njmp 1f\n1: jmp 1f\n1:" : : "a" (_data), "Nd" (_port));
+    __asm__ volatile("outb %0, %1\njmp 1f\n1: jmp 1f\n1:" : : "a" (data), "Nd" (portNumber));
 }
 
 void Port16Bit::Write(uint16_t data) {
