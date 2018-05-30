@@ -49,7 +49,7 @@ Port32Bit::~Port32Bit() {
 }
 
 void Port8Bit::Write(uint8_t data) {
-    __asm__ volatile("outb %0, %1" : : "a" (_data), "Nd" (_port));
+    __asm__ volatile("outb %0, %1" : : "a" (data), "Nd" (portNumber));
 }
 
 uint8_t Port8Bit::Read() {
