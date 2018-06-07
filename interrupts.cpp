@@ -1,5 +1,3 @@
-
-
 //
 // Created by Vineeth Yeevani on 6/6/18.
 //
@@ -99,7 +97,7 @@ uint32_t InterruptManager::DoHandleInterrupt(uint8_t interruptNumber, uint32_t e
   if (handlers[interruptNumber] != 0) {
     esp = handlers[interruptNumber]->HandleInterrupt(esp);
   } else if (interruptNumber != 0x20) {
-    char* foo = " Unhandled Interrupt 0x00";
+    char* foo = "Unhandled Interrupt 0x00 ";
     char* hex = "0123456789ABCDEF";
     foo[22] = hex[(interruptNumber >> 4) & 0x0F];
     foo[23] = hex[(interruptNumber & 0x0F)];
