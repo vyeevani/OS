@@ -1,3 +1,5 @@
+
+
 //
 // Created by Vineeth Yeevani on 6/6/18.
 //
@@ -6,8 +8,27 @@
 
 void printf(char* str);
 
-InterruptManager* InterruptManager::ActiveInterruptManager = 0;
+InterruptHandler::InterruptHandler(uint8_t interruptNumber, InterruptManager* interruptManager) {
+  this->interruptNumber = interruptNumber;
+  this->interruptManager = interruptManager;
+  interruptManager->handlers[interruptNumber] = this;
+}
 
+InterruptHandler::~InterruptHandler() {
+  if(interruptManager->handlers[interruptNumber] != 0) {
+    interruptManager->handlers[interruptNumber] == 0;
+  }
+}
+
+uint32_t InterruptHandler::HandleInterrupt(uint32_t esp) {
+  return esp;
+}
+
+
+
+InterruptManager::GateDescriptor InterruptManager::interruptDescriptorTable[256];
+
+InterruptManager* InterruptManager::ActiveInterruptManager = 0;
 
 InterruptManager::InterruptManager(GlobalDescriptorTable* gdt) : picMasterCommand(0x20),
 								 picMasterData(0x21),
@@ -16,6 +37,7 @@ InterruptManager::InterruptManager(GlobalDescriptorTable* gdt) : picMasterComman
   uint16_t CodeSegment = gdt->CodeSegmentSelector();
   const uint8_t IDT_INTERRUPT_GATE = 0xE;
   for (uint16_t i = 0; i < 256; i++) {
+    handlers[i] = 0;
     SetInterruptDescriptorTableEntry(i, CodeSegment, &InterruptIgnore, 0, IDT_INTERRUPT_GATE);
   }
   SetInterruptDescriptorTableEntry(0x20, CodeSegment, &HandleInterruptRequest0x00, 0, IDT_INTERRUPT_GATE);
@@ -48,8 +70,6 @@ InterruptManager::InterruptManager(GlobalDescriptorTable* gdt) : picMasterComman
 InterruptManager::~InterruptManager() {
 }
 
-InterruptManager::GateDescriptor InterruptManager::interruptDescriptorTable[256];
-
 void InterruptManager::SetInterruptDescriptorTableEntry(uint8_t interruptNumber,
 							uint16_t codeSegmentSelectorOffset,
 							void (*handler)(),
@@ -76,7 +96,15 @@ uint32_t InterruptManager::handleInterrupt(uint8_t interruptNumber, uint32_t esp
 }
 
 uint32_t InterruptManager::DoHandleInterrupt(uint8_t interruptNumber, uint32_t esp) {
-  printf(" Interrupt");
+  if (handlers[interruptNumber] != 0) {
+    esp = handlers[interruptNumber]->HandleInterrupt(esp);
+  } else if (interruptNumber != 0x20) {
+    char* foo = " Unhandled Interrupt 0x00";
+    char* hex = "0123456789ABCDEF";
+    foo[22] = hex[(interruptNumber >> 4) & 0x0F];
+    foo[23] = hex[(interruptNumber & 0x0F)];
+    printf(foo);
+  }
   if (0x20 <= interruptNumber && interruptNumber < 0x30) {
     picMasterCommand.Write(0x20);
     if (0x28 <= interruptNumber) {
@@ -100,3 +128,5 @@ void InterruptManager::Deactivate() {
     asm("cli");
   }
 }
+
+
