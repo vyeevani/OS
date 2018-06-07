@@ -6,6 +6,9 @@
 
 void printf(char* str);
 
+InterruptManager* InterruptManager::ActiveInterruptManager = 0;
+
+
 InterruptManager::InterruptManager(GlobalDescriptorTable* gdt) : picMasterCommand(0x20),
 								 picMasterData(0x21),
 								 picSlaveCommand(0xA0),
@@ -65,12 +68,29 @@ void InterruptManager::SetInterruptDescriptorTableEntry(uint8_t interruptNumber,
 
 
 uint32_t InterruptManager::handleInterrupt(uint8_t interruptNumber, uint32_t esp) {
-    printf(" Interrupt");
+  if (ActiveInterruptManager != 0){
+    return ActiveInterruptManager->DoHandleInterrupt(interruptNumber, esp);
+  } else {
     return esp;
-    
+  }
+}
+
+uint32_t InterruptManager::DoHandleInterrupt(uint8_t interruptNumber, uint32_t esp) {
+  printf(" Interrupt");
+  return esp;
 }
 
 void InterruptManager::Activate() {
+  if (ActiveInterruptManager != 0) {
+    ActiveInterruptManager->Deactivate();
+  }
+  ActiveInterruptManager = this;
   asm("sti");
 }
 
+void InterruptManager::Deactivate() {
+  if (ActiveInterruptManager == this) {
+    ActiveInterruptManager = 0;
+    asm("cli");
+  }
+}
