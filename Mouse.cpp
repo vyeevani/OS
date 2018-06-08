@@ -1,6 +1,6 @@
-#include "Keyboard.h"
+#include "Mouse.h"
 
-KeyboardDriver::KeyboardDriver(InterruptManager* interruptManager) : InterruptHandler(0x21, interruptManager), dataPort(0x60), commandPort(0x64) {
+MouseDriver::MouseDriver(InterruptManager* interruptManager) : InterruptHandler(0x21, interruptManager), dataPort(0x60), commandPort(0x64) {
   while(commandPort.Read() & 0x1) {
     dataPort.Read();
   }
