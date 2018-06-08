@@ -69,7 +69,7 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp) {
       case 0x35: printf("-"); break;
 
       case 0x1C: printf("\n"); break;
-      case 0x39: prinft(" "); break;
+      case 0x39: printf(" "); break;
       default:
         char* foo = "KeyBoard 0x00 ";
         char* hex = "0123456789ABCDEF";
